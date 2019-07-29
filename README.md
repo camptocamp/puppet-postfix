@@ -141,7 +141,7 @@ Default: False.
 
 ##### `mydestination`
 A string to define the mydestination parameter in main.cf (postconf(5)).  
-Default: The systems FQDN.  
+Default: $myhostname, localhost.$mydomain, localhost
 Example: 'example.com, foo.example.com'.
 
 ##### `mynetworks`

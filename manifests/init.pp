@@ -120,7 +120,7 @@ class postfix (
   String                          $master_bounce_command = 'bounce',
   String                          $master_defer_command  = 'bounce',
   Boolean                         $mta                 = false,
-  String                          $mydestination       = '$myorigin',   # postfix_mydestination
+  String                          $mydestination       = '$myhostname, localhost.$mydomain, localhost',  # postfix_mydestination
   String                          $mynetworks          = '127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128', # postfix_mynetworks
   String                          $myorigin            = $::fqdn,
   Boolean                         $manage_aliases      = true,          # /etc/aliases
