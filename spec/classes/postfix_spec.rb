@@ -480,6 +480,86 @@ describe 'postfix' do
               is_expected.to contain_postfix__config('message_size_limit').with_value('51200000')
             end
           end
+          context 'when hash hash is used' do
+            let(:params) do
+              {
+                hash: {
+                  '/etc/postfix/transport' => {
+                    'ensure' => 'present',
+                  },
+                },
+              }
+            end
+
+            it 'updates master.cf with the specified contents' do
+              is_expected.to contain_postfix__hash('/etc/postfix/transport').with_ensure('present')
+            end
+          end
+          context 'when transport hash is used' do
+            let(:params) do
+              {
+                transport: {
+                  'local_relay' => {
+                    'nexthop' => '[10.12.0.2]:9925',
+                  },
+                },
+              }
+            end
+
+            it 'updates master.cf with the specified contents' do
+              is_expected.to contain_postfix__transport('local_relay').with_nexthop('[10.12.0.2]:9925')
+            end
+          end
+          context 'when virtual hash is used' do
+            let(:params) do
+              {
+                virtual: {
+                  'someone@somedomain.tld' => {
+                    'destination' => 'internal@ourdomain.tld',
+                  },
+                },
+              }
+            end
+
+            it 'updates master.cf with the specified contents' do
+              is_expected.to contain_postfix__virtual('someone@somedomain.tld').with_destination('internal@ourdomain.tld')
+            end
+          end
+          context 'when conffile hash is used' do
+            let(:params) do
+              {
+                conffile: {
+                  'ldapoptions.cf' => {
+                    'mode'    => '0640',
+                    'options' => {
+                      'server_host'      => 'ldap.mydomain.com',
+                      'bind'             => 'yes',
+                      'bind_dn'          => 'cn=admin,dc=mydomain,dc=com',
+                      'bind_pw'          => 'password',
+                      'search_base'      => 'dc=example, dc=com',
+                      'query_filter'     => 'mail=%s',
+                      'result_attribute' => 'uid',
+                    },
+                  },
+                },
+              }
+            end
+
+            it 'creates ldapoptions.cf with the specified contents' do
+              is_expected.to contain_postfix__conffile('ldapoptions.cf').with(
+                'mode'    => '0640',
+                'options' => {
+                  'server_host'      => 'ldap.mydomain.com',
+                  'bind'             => 'yes',
+                  'bind_dn'          => 'cn=admin,dc=mydomain,dc=com',
+                  'bind_pw'          => 'password',
+                  'search_base'      => 'dc=example, dc=com',
+                  'query_filter'     => 'mail=%s',
+                  'result_attribute' => 'uid',
+                }
+              )
+            end
+          end
         end
       end
     end

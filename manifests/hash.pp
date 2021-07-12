@@ -50,6 +50,4 @@ define postfix::hash (
     path    => $name,
     mode    => $mode,
   }
-
-  Class['postfix'] -> Postfix::Hash[$title]
 }

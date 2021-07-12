@@ -10,6 +10,14 @@
 #
 # [*configs*]             - (hash)
 #
+# [*hash*]                - (hash) A hash of postfix::hash resources
+#
+# [*transport*]           - (hash) A hash of postfix::transport resources
+#
+# [*virtual*]             - (hash) A hash of postfix::virtual resources
+#
+# [*conffile*]             - (hash) A hash of postfix::conffile resources
+#
 # [*amavis_procs*]        - (integer) Number of amavis scanners to spawn
 #
 # [*inet_interfaces*]     - (string)
@@ -97,6 +105,10 @@ class postfix (
   String                          $root_group          = 'root',
   String                          $alias_maps          = 'hash:/etc/aliases',
   Optional[Hash]                  $configs             = {},
+  Optional[Hash]                  $hash                = {},
+  Optional[Hash]                  $transport           = {},
+  Optional[Hash]                  $virtual             = {},
+  Optional[Hash]                  $conffile            = {},
   Integer                         $amavis_procs        = 2,
   String                          $inet_interfaces     = 'all',
   String                          $inet_protocols      = 'all',
@@ -158,6 +170,10 @@ class postfix (
   }
 
   create_resources('::postfix::config', $configs)
+  create_resources('::postfix::transport', $transport)
+  create_resources('::postfix::virtual', $virtual)
+  create_resources('::postfix::hash', $hash)
+  create_resources('::postfix::conffile', $conffile)
 
   anchor { 'postfix::begin': }
   -> class { '::postfix::packages': }
